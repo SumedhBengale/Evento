@@ -4,7 +4,7 @@ function HomePage() {
   return (
     <>
     
-    <div className='italic text-6xl text-bold bg-red-600' >Anjishnu</div>
+    <a className='italic text-6xl text-bold bg-red-600' href="http://amazon.com" >Anjishnu</a>
     </>
   )
 }
