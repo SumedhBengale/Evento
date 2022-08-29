@@ -1,4 +1,5 @@
 /*This is a Simple Button that will open the prompt to Install the PWA */
+/*This apparently does not work in React Debug Mode */
 
 
 import React, { useEffect, useState } from "react";
@@ -28,6 +29,7 @@ const InstallPWA = () => {
     promptInstall.prompt();
   };
   if (!supportsPWA) {
+    console.log("Unsupported!")
     return null;
   }
   return (
@@ -40,6 +42,7 @@ const InstallPWA = () => {
     >
       Install
     </button>
+
   );
 };
 
