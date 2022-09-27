@@ -3,20 +3,21 @@ import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import { Button } from 'flowbite-react';
 import { Event } from '../../models';
+import Feed from '../Feed/Feed';
+import { useEffect } from 'react';
 
 
 function HomePage() {
     let navigate=useNavigate();
 
+    async function getModels() {
+      const events =await DataStore.query(Event); 
+      console.log(events);
+    }
 
     async function getUserInfo() {
       const user = await Auth.currentAuthenticatedUser();
       console.log('attributes:', user.attributes);
-    }
-
-     async function getModels() {
-      const models =await DataStore.query(Event); 
-      console.log(models);
     }
 
   return (
@@ -33,11 +34,7 @@ function HomePage() {
         <Button onClick={()=> getModels()}>Get Events</Button>
 
         <hr></hr>
-
-        [...Array(10)].map(() ( 
-    <div className="" key={index}> Whatever needs to be rendered repeatedly </div> 
-    ) 
-)
+        <Feed></Feed>
     </>
   )
 }
