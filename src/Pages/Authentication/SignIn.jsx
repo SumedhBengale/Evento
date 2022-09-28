@@ -74,10 +74,6 @@ function SignIn() {
                     </div>
                 </div>
             </form>
-
-            <div className='text-2xl bg-slate-200 h-full rounded-sm' onClick={
-                signOut
-            }>Sign Out</div>
             </div>
     </>
   )
