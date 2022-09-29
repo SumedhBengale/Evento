@@ -60,6 +60,20 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "location": {
+                    "name": "location",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "radius": {
+                    "name": "radius",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -105,5 +119,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "c904af128af3a5bf17651e5709a4c631"
+    "version": "b21054bc62a8d7505b2e34670d4fe6c7"
 };

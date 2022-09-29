@@ -11,19 +11,6 @@
       "StackId": "arn:aws:cloudformation:ap-south-1:244178105050:stack/amplify-ternaems-dev-202524/9cfd9df0-2c61-11ed-a47d-06a06b3655be",
       "AmplifyAppId": "d2pdy7rz6yh4gn",
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-ternaems-dev-202524-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "auth": {
-        "TernaEMSAuth": {},
-        "userPoolGroups": {}
-      },
-      "function": {
-        "TernaEMSAuthPostConfirmation": {
-          "GROUP": "Students",
-          "deploymentBucketName": "amplify-ternaems-dev-202524-deployment",
-          "s3Key": "amplify-builds/TernaEMSAuthPostConfirmation-49707273707769466a6a-build.zip"
-        }
-      }
     }
   }
 }

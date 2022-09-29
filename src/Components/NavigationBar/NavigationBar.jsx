@@ -24,7 +24,7 @@ function NavigationBar() {
         >
         <Navbar.Brand href="https://flowbite.com/">
             <img
-            src="https://flowbite.com/docs/images/logo.svg"
+            src="logo.png"
             className="mr-3 h-6 sm:h-9"
             alt="Flowbite Logo"
             />

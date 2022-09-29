@@ -17,6 +17,8 @@ export declare class Event {
   readonly organizer: string;
   readonly guests?: string | null;
   readonly attendees?: string[] | null;
+  readonly location?: string | null;
+  readonly radius?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Event, EventMetaData>);
