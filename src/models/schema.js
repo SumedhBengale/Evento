@@ -55,8 +55,8 @@ export const schema = {
                 "attendees": {
                     "name": "attendees",
                     "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
+                    "type": "AWSJSON",
+                    "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
@@ -119,5 +119,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "b21054bc62a8d7505b2e34670d4fe6c7"
+    "version": "2563524065a114eeca85ea69dca4dc6a"
 };

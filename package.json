@@ -12,6 +12,7 @@
     "flowbite": "^1.5.3",
     "flowbite-react": "^0.1.10",
     "geolib": "^3.3.3",
+    "moment": "^2.29.4",
     "mongodb": "^4.8.1",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "react": "^18.2.0",
@@ -63,6 +64,8 @@
     "tailwindcss": "^3.1.7"
   },
   "react-dotenv": {
-    "whitelist": ["MAPS_API"]
+    "whitelist": [
+      "MAPS_API"
+    ]
   }
 }

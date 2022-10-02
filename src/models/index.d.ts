@@ -16,7 +16,7 @@ export declare class Event {
   readonly extension?: string | null;
   readonly organizer: string;
   readonly guests?: string | null;
-  readonly attendees?: string[] | null;
+  readonly attendees?: (string | null)[] | null;
   readonly location?: string | null;
   readonly radius?: number | null;
   readonly createdAt?: string | null;
