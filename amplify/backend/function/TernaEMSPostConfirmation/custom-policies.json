@@ -1,0 +1,12 @@
+[
+  {
+    "Action": [
+      "cognito-idp:AdminAddUserToGroup",
+      "cognito-idp:CreateGroup",
+      "cognito-idp:GetGroup"
+    ],
+    "Resource": [
+      "arn:aws:cognito-idp:ap-south-1:244178105050:userpool/ap-south-1_ut3vbOUT6"
+    ]
+  }
+]

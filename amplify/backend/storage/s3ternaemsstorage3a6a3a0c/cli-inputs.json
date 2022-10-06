@@ -1,0 +1,18 @@
+{
+  "resourceName": "s3ternaemsstorage3a6a3a0c",
+  "bucketName": "ternaems-storage-3a6a3a0c",
+  "policyUUID": "2182cef5",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [],
+  "authAccess": [],
+  "groupAccess": {
+    "Admins": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "Students": [
+      "READ"
+    ]
+  }
+}
