@@ -24,8 +24,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "untitledfield": {
-                    "name": "untitledfield",
+                "time": {
+                    "name": "time",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": false,
@@ -119,5 +119,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "8c7ce60b9651688d5106489a665f9939"
+    "version": "2563524065a114eeca85ea69dca4dc6a"
 };

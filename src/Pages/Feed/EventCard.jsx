@@ -21,6 +21,7 @@ function EventCard(props) {
             setImage(await Storage.get(props.event['id']+"."+props.event['extension']));
         }
         getImage();
+        navigator.geolocation.getCurrentPosition((position) => setcurLoc({ 'lat': position.coords.latitude, 'lng': position.coords.longitude }));
     },[]);
 
     
@@ -33,8 +34,7 @@ function EventCard(props) {
     }
 
     async function attend(location) {
-      navigator.geolocation.getCurrentPosition((position) => setcurLoc({ 'lat': position.coords.latitude, 'lng': position.coords.longitude })
-      );
+      
       const user = await Auth.currentAuthenticatedUser();
       async function updatePost(id) {
         const original = await DataStore.query(Event, id);

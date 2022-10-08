@@ -21,7 +21,7 @@
         "TernaEMSPostConfirmation": {
           "GROUP": "Students",
           "deploymentBucketName": "amplify-ternaems-staging-101140-deployment",
-          "s3Key": "amplify-builds/TernaEMSPostConfirmation-6c74516b575a72443050-build.zip"
+          "s3Key": "amplify-builds/TernaEMSPostConfirmation-2b585462497a4b564a51-build.zip"
         }
       }
     }

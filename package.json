@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "aws-amplify": "^4.3.33",
+    "canvas": "^2.10.1",
     "dotenv": "^16.0.2",
     "flowbite": "^1.5.3",
     "flowbite-react": "^0.1.10",

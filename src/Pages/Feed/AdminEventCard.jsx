@@ -1,16 +1,19 @@
 import { Auth, DataStore, Storage } from 'aws-amplify';
 import { Alert, Button, Modal } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
+import certificateGeneration from '../../Components/Certificates/CertificateGeneration';
 import { Event } from '../../models/index';
 
 function AdminEventCard(props) {
     const [modalVisible, setModalVisible] = useState(false);
     const [image, setImage] = useState(null);
+    const [template, setTemplate] = useState(null);
 
 
     useEffect(() => {
         async function getImage() {
             setImage(await Storage.get(props.event['id']+"."+props.event['extension']));
+            setTemplate(await Storage.get("certificate_template.png"));
         }
         getImage();
     },[]);
@@ -39,6 +42,7 @@ function AdminEventCard(props) {
     <hr></hr>
     <Button type="button" onClick={()=>setModalVisible(true)
 }>Edit</Button>
+
     <Modal
     show={modalVisible}
     onClose={()=>setModalVisible(false)}
@@ -65,6 +69,8 @@ function AdminEventCard(props) {
       </Button>
     </Modal.Footer>
   </Modal>
+  <hr></hr>
+  <Button onClick={()=>certificateGeneration(props)}>Send Certificates</Button>
     </div>
     </>
   )
