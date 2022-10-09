@@ -1,8 +1,11 @@
-import { type } from '@testing-library/user-event/dist/type';
 import { Auth, DataStore, Storage } from 'aws-amplify';
 import { Button, Card, Modal } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { Event } from '../../models';
+import template from '../../Components/Certificates/template.png'
+import { createCanvas, loadImage } from 'canvas';
+import certificateGeneration from '../../Components/Certificates/CertificateGeneration';
+
 
 const geolib = require('geolib');
 
@@ -11,6 +14,7 @@ function EventCard(props) {
     const [modalVisible, setModalVisible] = useState(false);
     const [image, setImage] = useState(null);
     const [curLoc, setcurLoc] = useState(null);
+    var date = new Date(props.event['time'])
 
     
     useEffect(() => {
@@ -25,25 +29,18 @@ function EventCard(props) {
     },[]);
 
     
-    
-    async function deleteEvent() {
-        const modelToDelete = await DataStore.query(Event, props.event['id']);
-        DataStore.delete(modelToDelete);
-        Storage.remove(props.event['id']+"."+props.event['extension']);
-        window.location.reload(false);
-    }
 
     async function attend(location) {
       
       const user = await Auth.currentAuthenticatedUser();
+      const currentUser = {
+        "name":user.attributes['name'],
+        "middle_name":user.attributes['middle_name'],
+        "family_name":user.attributes['family_name'],
+        "email":user.attributes['email'],
+      }
       async function updatePost(id) {
         const original = await DataStore.query(Event, id);
-        const currentUser = {
-          "name":user.attributes['name'],
-          "middle_name":user.attributes['middle_name'],
-          "family_name":user.attributes['family_name'],
-          "email":user.attributes['email'],
-        }
         var attendeeList = original.attendees
         var newAttendeeList = [...JSON.parse(attendeeList),currentUser]
         console.log(newAttendeeList.length)
@@ -60,7 +57,8 @@ function EventCard(props) {
       }
       else if (x<0) {
         console.log("You are within the permitted range, the attendence will be marked.")
-        updatePost(props.event["id"]);
+        updatePost(props.event['id']);
+        certificateGeneration(props)
 
       }
       else{

@@ -7,11 +7,6 @@ import { Event } from '../../models/index';
 function NavigationBar() {
     let navigate=useNavigate();
 
-    async function getModels() {
-      const events =await DataStore.query(Event); 
-      console.log(events);
-    }
-
     async function getUserInfo() {
       const user = await Auth.currentAuthenticatedUser();
       console.log('attributes:', user);
@@ -46,7 +41,7 @@ function NavigationBar() {
         <hr></hr>
         <Navbar.Link onClick={()=> navigate('/admin-console')}><div className='cursor-pointer'>Admin Page</div></Navbar.Link>
         <hr></hr>
-        <Navbar.Link onClick={()=> getModels()}><div className='cursor-pointer'>Get Events</div></Navbar.Link>
+        <Navbar.Link onClick={()=> navigate('/certificates')}><div className='cursor-pointer'>My Certificates</div></Navbar.Link>
         <hr></hr>
         <Navbar.Link onClick={async ()=>await Auth.signOut()}><div className='cursor-pointer'>Sign Out</div></Navbar.Link>
             </Navbar.Collapse>

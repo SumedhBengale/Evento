@@ -10,6 +10,7 @@ import AdminConsole from './Pages/HomePage/AdminConsole/AdminConsole';
 import AddEvent from './Pages/HomePage/AdminConsole/AddEvent';
 import awsExports from './aws-exports';
 import {Amplify} from 'aws-amplify';
+import Certificates from './Pages/Certificates/Certificates';
 
 function App() {
   Amplify.configure(awsExports);
@@ -24,6 +25,7 @@ function App() {
         <Route path='confirmSignUp' element={<ConfirmSignUp></ConfirmSignUp>}></Route>
         <Route path='admin-console' element={<AdminConsole></AdminConsole>}></Route>
         <Route path='add-event' element={<AddEvent></AddEvent>}></Route>
+        <Route path='certificates' element={<Certificates></Certificates>}></Route>
       </Routes>
     </BrowserRouter>
     </>

@@ -20,14 +20,14 @@ function AdminEventCard(props) {
     
     async function deleteEvent() {
         const modelToDelete = await DataStore.query(Event, props.event['id']);
+        console.log()
         DataStore.delete(modelToDelete);
         Storage.remove(props.event['id']+"."+props.event['extension']);
         window.location.reload(false);
-}
+      }
 
   return (
     <>
-    
     <div className='m-5 p-5 rounded-lg bg-slate-200'>
     <div>EventCard</div>
     <div className='w-60'>
