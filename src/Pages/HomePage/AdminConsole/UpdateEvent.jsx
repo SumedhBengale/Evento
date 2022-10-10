@@ -1,6 +1,6 @@
 import { DataStore, Storage } from "aws-amplify";
 import { Alert, Button, FileInput, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavigationBar from "../../../Components/NavigationBar/NavigationBar";
 import { Event } from "../../../models";
 import {
@@ -10,20 +10,16 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 
-function AddEvent() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+function UpdateEvent(props) {
+  const [name, setName] = useState(props.event["name"]);
+  const [description, setDescription] = useState(props.event["description"]);
   const [poster, setPoster] = useState("");
-  const [time, setTime] = useState(null);
-  const [organizer, setOrganizer] = useState("");
-  const [guests, setGuests] = useState("");
-  const [location, setLocation] = useState({
-    lat: 19.0296441,
-    lng: 73.0166434,
-  });
-  const [radius, setRadius] = useState(5);
+  const [time, setTime] = useState(props.event["time"]);
+  const [organizer, setOrganizer] = useState(props.event["organizer"]);
+  const [guests, setGuests] = useState(props.event["guests"]);
+  const [location, setLocation] = useState(props.event["location"]);
+  const [radius, setRadius] = useState(props.event["radius"]);
   const [map, setMap] = React.useState(null);
-  const [enterInfoAlert, setenterInfoAlert] = useState(false);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_MAPS_API,
@@ -43,7 +39,7 @@ function AddEvent() {
     console.log(location);
   };
 
-  async function newEvent() {
+  async function updateEvent() {
     if (
       name != "" &&
       description != "" &&
@@ -54,17 +50,17 @@ function AddEvent() {
       const file = poster.target.files[0];
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
       try {
+        const original = await DataStore.query(Event, props.event["id"]);
         const newEvent = await DataStore.save(
-          new Event({
-            name: name,
-            description: description,
-            time: time,
-            extension: ext,
-            organizer: organizer,
-            guests: guests,
-            location: location,
-            radius: radius,
-            attendees: [],
+          Event.copyOf(original, (updated) => {
+            updated.name = name;
+            updated.description = description;
+            updated.name = name;
+            updated.name = name;
+            updated.name = name;
+            updated.name = name;
+            updated.name = name;
+            updated.name = name;
           })
         );
         console.log(newEvent.id);
@@ -84,12 +80,9 @@ function AddEvent() {
   }
   return (
     <>
-      <NavigationBar></NavigationBar>
-      <div className="text-3xl pt-20 pl-20">Add Event</div>
       <form
-        className="p-20"
         onSubmit={(e) => {
-          newEvent();
+          updateEvent();
           e.preventDefault();
         }}
       >
@@ -98,6 +91,7 @@ function AddEvent() {
             <TextInput
               type="text"
               placeholder="Name"
+              value={name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -106,6 +100,7 @@ function AddEvent() {
             <TextInput
               id="large"
               placeholder="Description"
+              value={description}
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
@@ -122,13 +117,15 @@ function AddEvent() {
             <TextInput
               type="text"
               placeholder="Guest"
+              value={guests}
               onChange={(e) => {
-                setGuests(e.target.value);
+                setGuests(guests);
               }}
             ></TextInput>
             <TextInput
               type="text"
               placeholder="Organizer"
+              value={organizer}
               onChange={(e) => {
                 setOrganizer(e.target.value);
               }}
@@ -137,11 +134,27 @@ function AddEvent() {
             <TextInput
               type="datetime-local"
               placeholder="Time"
+              value={time}
               onChange={(e) => {
                 setTime(new Date(e.target.value).toISOString());
               }}
               required
             ></TextInput>
+            <div className="w-1/2 mt-5">
+              <TextInput
+                id="rad"
+                type="number"
+                placeholder="Radius"
+                value={radius}
+                onChange={(e) => {
+                  setRadius(parseInt(e.target.value));
+                }}
+                required
+              ></TextInput>
+              <div className="mt-5">
+                <Button type="submit">Submit</Button>
+              </div>
+            </div>
           </div>
           <div>
             {isLoaded ? (
@@ -157,19 +170,6 @@ function AddEvent() {
                   <MarkerF position={location}></MarkerF>
                   <CircleF center={location} radius={radius}></CircleF>
                 </GoogleMap>
-                <div className="w-1/2 pt-5">
-                  <TextInput
-                    id="rad"
-                    type="number"
-                    placeholder="Enter the Event Radius"
-                    onChange={(e) => {
-                      setRadius(parseInt(e.target.value));
-                    }}
-                  ></TextInput>
-                  <div className="pt-5">
-                    <Button type="submit">Submit</Button>
-                  </div>
-                </div>
               </>
             ) : (
               <div>Loading</div>
@@ -181,4 +181,4 @@ function AddEvent() {
   );
 }
 
-export default AddEvent;
+export default UpdateEvent;

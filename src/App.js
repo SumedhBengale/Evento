@@ -11,6 +11,7 @@ import AddEvent from './Pages/HomePage/AdminConsole/AddEvent';
 import awsExports from './aws-exports';
 import {Amplify} from 'aws-amplify';
 import Certificates from './Pages/Certificates/Certificates';
+import QR from './QR';
 
 function App() {
   Amplify.configure(awsExports);
@@ -26,6 +27,8 @@ function App() {
         <Route path='admin-console' element={<AdminConsole></AdminConsole>}></Route>
         <Route path='add-event' element={<AddEvent></AddEvent>}></Route>
         <Route path='certificates' element={<Certificates></Certificates>}></Route>
+        <Route path='qr' element={<QR></QR>}></Route>
+
       </Routes>
     </BrowserRouter>
     </>

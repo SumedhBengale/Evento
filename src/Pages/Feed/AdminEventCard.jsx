@@ -1,79 +1,108 @@
-import { Auth, DataStore, Storage } from 'aws-amplify';
-import { Alert, Button, Modal } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
-import certificateGeneration from '../../Components/Certificates/CertificateGeneration';
-import { Event } from '../../models/index';
+import { Auth, DataStore, Storage } from "aws-amplify";
+import { Alert, Button, Card, Modal } from "flowbite-react";
+import React, { useEffect, useState } from "react";
+import QRCode from "react-qr-code";
+import certificateGeneration from "../../Components/Certificates/CertificateGeneration";
+import { Event } from "../../models/index";
+import UpdateEvent from "../HomePage/AdminConsole/UpdateEvent";
 
 function AdminEventCard(props) {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [image, setImage] = useState(null);
-    const [template, setTemplate] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState(null);
+  const [time, setTime] = useState(null);
+  const [QRVisible, setQRVisible] = useState(false);
 
+  useEffect(() => {
+    async function getImage() {
+      var date = new Date(props.event["time"]);
+      setTime(
+        date.getDate() +
+          "-" +
+          date.getMonth() +
+          "-" +
+          date.getFullYear() +
+          " " +
+          date.toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
+        500,
+        540
+      );
+      setImage(
+        await Storage.get(props.event["id"] + "." + props.event["extension"])
+      );
+    }
+    getImage();
+  }, []);
 
-    useEffect(() => {
-        async function getImage() {
-            setImage(await Storage.get(props.event['id']+"."+props.event['extension']));
-            setTemplate(await Storage.get("certificate_template.png"));
-        }
-        getImage();
-    },[]);
-    
-    async function deleteEvent() {
-        const modelToDelete = await DataStore.query(Event, props.event['id']);
-        console.log()
-        DataStore.delete(modelToDelete);
-        Storage.remove(props.event['id']+"."+props.event['extension']);
-        window.location.reload(false);
-      }
+  async function deleteEvent() {
+    const modelToDelete = await DataStore.query(Event, props.event["id"]);
+    console.log();
+    DataStore.delete(modelToDelete);
+    Storage.remove(props.event["id"] + "." + props.event["extension"]);
+    window.location.reload(false);
+  }
 
   return (
     <>
-    <div className='m-5 p-5 rounded-lg bg-slate-200'>
-    <div>EventCard</div>
-    <div className='w-60'>
-        <div>{image==null?<div>Loading</div>:<img src={image}></img>}</div>
-    </div>
-    <div>Name: {props.event['name']}</div>
-    <div>Description: {props.event['description']}</div>
-    <div>Time: {props.event['time']}</div>
-    <div>Organizer: {props.event['organizer']}</div>
-    <div>Guests: {props.event['guests']}</div>
-    <Button onClick={()=>deleteEvent()}>Delete</Button>
-    <hr></hr>
-    <Button type="button" onClick={()=>setModalVisible(true)
-}>Edit</Button>
+      <Card className="p-20">
+        <div className="grid grid-cols-3">
+          <div className="col-span-2">
+            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Name: {props.event["name"]}
+            </h5>
+            <p className="font-normal text-gray-700 dark:text-gray-400">
+              Time: {time}
+            </p>
+            <p className="font-normal text-gray-700 dark:text-gray-400">
+              Organizer: {props.event["organizer"]}{" "}
+            </p>
+            <p className="font-normal text-gray-700 dark:text-gray-400">
+              Guests: {props.event["guests"]}{" "}
+            </p>
+            <div className="flex gap-2">
+              <Button onClick={() => deleteEvent()}>Delete</Button>
+              <hr></hr>
+              <Button type="button" onClick={() => setModalVisible(true)}>
+                Edit
+              </Button>
 
-    <Modal
-    show={modalVisible}
-    onClose={()=>setModalVisible(false)}
-  >
-    <Modal.Header>
-      Edit Event
-    </Modal.Header>
-    <Modal.Body>
-      <div className="space-y-6">
-        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-          With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-        </p>
-        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-          The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-        </p>
-      </div>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button
-        color="gray"
-        onClick={()=>setModalVisible(false)}
-      >
-        Close
-      </Button>
-    </Modal.Footer>
-  </Modal>
-  <hr></hr>
-  <Button onClick={()=>certificateGeneration(props)}>Send Certificates</Button>
-    </div>
+              <Modal
+                size="3xl"
+                show={modalVisible}
+                onClose={() => setModalVisible(false)}
+              >
+                <Modal.Header>Edit Event</Modal.Header>
+                <Modal.Body>
+                  <div className="">
+                    <UpdateEvent event={props.event}></UpdateEvent>
+                  </div>
+                </Modal.Body>
+              </Modal>
+              <hr></hr>
+              <Button onClick={() => certificateGeneration(props)}>
+                Send Certificates
+              </Button>
+              <Button onClick={() => setQRVisible(true)}>Show QR Code</Button>
+              <Modal show={QRVisible} onClose={() => setQRVisible(false)}>
+                <Modal.Header>Attendance QR Code</Modal.Header>
+                <Modal.Body>
+                  <div className="flex justify-center m-5">
+                    <QRCode value={props.event["id"]}></QRCode>
+                  </div>
+                </Modal.Body>
+              </Modal>
+            </div>
+          </div>
+          <div className="p-2 flex bg-slate-100 rounded-lg justify-center items-center max-h-50 hover:scale-105 ease-in duration-75">
+            <img src={image} />
+          </div>
+        </div>
+      </Card>
     </>
-  )
+  );
 }
 
-export default AdminEventCard
+export default AdminEventCard;
