@@ -12,6 +12,11 @@ function NavigationBar() {
     const user = await Auth.currentAuthenticatedUser();
     console.log("attributes:", user);
   }
+
+  async function signOut() {
+    await Auth.signOut();
+    navigate("/signin");
+  }
   return (
     <>
       <Navbar fluid={true} rounded={true}>
@@ -47,7 +52,7 @@ function NavigationBar() {
             <div className="cursor-pointer">My Certificates</div>
           </Navbar.Link>
           <hr></hr>
-          <Navbar.Link onClick={async () => await Auth.signOut()}>
+          <Navbar.Link onClick={signOut}>
             <div className="cursor-pointer">Sign Out</div>
           </Navbar.Link>
         </Navbar.Collapse>
