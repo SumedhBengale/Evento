@@ -1,9 +1,7 @@
-import { Auth, DataStore } from "aws-amplify";
-import { Button, Navbar } from "flowbite-react";
+import { Auth } from "aws-amplify";
+import { Navbar } from "flowbite-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import InstallPWA from "../../InstallPWA";
-import { Event } from "../../models/index";
 
 function NavigationBar() {
   let navigate = useNavigate();
@@ -44,12 +42,6 @@ function NavigationBar() {
           <Navbar.Link onClick={signOut}>
             <div className="cursor-pointer">Sign Out</div>
           </Navbar.Link>
-          <hr></hr>
-          {/* <Navbar.Link> */}
-          {/* <div> */}
-          <InstallPWA></InstallPWA>
-          {/* </div> */}
-          {/* </Navbar.Link> */}
         </Navbar.Collapse>
       </Navbar>
     </>

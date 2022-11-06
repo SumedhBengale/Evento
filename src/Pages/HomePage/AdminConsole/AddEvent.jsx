@@ -1,5 +1,5 @@
 import { DataStore, Storage } from "aws-amplify";
-import { Alert, Button, FileInput, TextInput } from "flowbite-react";
+import { Alert, Button, FileInput, Modal, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import NavigationBar from "../../../Components/NavigationBar/NavigationBar";
 import { Event } from "../../../models";
@@ -9,8 +9,11 @@ import {
   MarkerF,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
 
 function AddEvent() {
+  let navigate = useNavigate();
+  const [network, setNetwork] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [poster, setPoster] = useState("");
@@ -23,10 +26,9 @@ function AddEvent() {
   });
   const [radius, setRadius] = useState(5);
   const [map, setMap] = React.useState(null);
-  const [enterInfoAlert, setenterInfoAlert] = useState(false);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: process.env.REACT_APP_MAPS_API,
+    googleMapsApiKey: "AIzaSyBoZFGXOCwer9dv34IPMOhFqlApLBQtprs",
   });
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(location);
@@ -87,14 +89,24 @@ function AddEvent() {
       <NavigationBar></NavigationBar>
       <div className="text-3xl pt-20 pl-20">Add Event</div>
       <form
-        className="p-20"
+        className="p-4 lg:p-20"
         onSubmit={(e) => {
-          newEvent();
           e.preventDefault();
+          fetch("https://www.google.com/", {
+            // Check for internet connectivity
+            mode: "no-cors",
+          })
+            .then(() => {
+              newEvent();
+              navigate("/admin-console");
+            })
+            .catch(() => {
+              setNetwork(false);
+            });
         }}
       >
-        <div className="grid grid-cols-2">
-          <div className="grid grid-cols-1 gap-6 w-3/4">
+        <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2">
+          <div className="grid lg:gap-6 gap-2">
             <TextInput
               type="text"
               placeholder="Name"
@@ -145,7 +157,7 @@ function AddEvent() {
           </div>
           <div>
             {isLoaded ? (
-              <>
+              <div className="lg:h-96 h-40">
                 <GoogleMap
                   onClick={getLocation}
                   center={location}
@@ -170,13 +182,17 @@ function AddEvent() {
                     <Button type="submit">Submit</Button>
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
               <div>Loading</div>
             )}
           </div>
         </div>
       </form>
+      <Modal show={!network}>
+        <Modal.Header>You are Offline</Modal.Header>
+        <Modal.Body>Please Refresh the Page</Modal.Body>
+      </Modal>
     </>
   );
 }

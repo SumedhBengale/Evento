@@ -6,12 +6,18 @@ import certificateGeneration from "../../Components/Certificates/CertificateGene
 import { Event } from "../../models/index";
 import UpdateEvent from "../HomePage/AdminConsole/UpdateEvent";
 import { ExportJsonCsv } from "react-export-json-csv";
+import { useNavigate } from "react-router-dom";
 
 function AdminEventCard(props) {
+  const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [time, setTime] = useState(null);
   const [QRVisible, setQRVisible] = useState(false);
+  const [network, setNetwork] = useState(true);
+  const [certificatesMessage, setCertificatesMessage] = useState(false);
+  const [attendees, setAttendees] = useState(null);
+
   var eventTitle = props.event["name"];
   const headers = [
     {
@@ -55,29 +61,49 @@ function AdminEventCard(props) {
       );
     }
     getImage();
+    clean();
   }, []);
 
   function clean() {
-    //Cleans the Attendees JSON Array of duplicate elements.
-    var uncleanArray = JSON.parse(props.event["attendees"]);
+    fetch("https://www.google.com/", {
+      // Check for internet connectivity
+      mode: "no-cors",
+    })
+      .then(() => {
+        //Cleans the Attendees JSON Array of duplicate elements.
 
-    const clean = (arr, prop) =>
-      arr.reduce((accumulator, currentValue) => {
-        if (!accumulator.find((obj) => obj[prop] === currentValue[prop])) {
-          accumulator.push(currentValue);
-        }
-        return accumulator;
-      }, []);
-    var cleanArray = clean(uncleanArray, "email");
-    console.log(cleanArray);
-    return cleanArray;
+        var uncleanArray = JSON.parse(props.event["attendees"]);
+        console.log(uncleanArray);
+        const clean = (arr, prop) =>
+          arr.reduce((accumulator, currentValue) => {
+            if (!accumulator.find((obj) => obj[prop] === currentValue[prop])) {
+              accumulator.push(currentValue);
+            }
+            return accumulator;
+          }, []);
+        var cleanArray = clean(uncleanArray, "email");
+        console.log(cleanArray);
+        setAttendees(cleanArray);
+      })
+      .catch(() => {
+        setNetwork(false);
+      });
   }
   async function deleteEvent() {
-    const modelToDelete = await DataStore.query(Event, props.event["id"]);
-    console.log();
-    DataStore.delete(modelToDelete);
-    Storage.remove(props.event["id"] + "." + props.event["extension"]);
-    window.location.reload(false);
+    fetch("https://www.google.com/", {
+      // Check for internet connectivity
+      mode: "no-cors",
+    })
+      .then(async () => {
+        const modelToDelete = await DataStore.query(Event, props.event["id"]);
+        console.log();
+        DataStore.delete(modelToDelete);
+        Storage.remove(props.event["id"] + "." + props.event["extension"]);
+        window.location.reload(false);
+      })
+      .catch(() => {
+        setNetwork(false);
+      });
   }
 
   return (
@@ -107,7 +133,18 @@ function AdminEventCard(props) {
           </div>
           <div
             type="button"
-            onClick={() => setModalVisible(true)}
+            onClick={() =>
+              fetch("https://www.google.com/", {
+                // Check for internet connectivity
+                mode: "no-cors",
+              })
+                .then(() => {
+                  setModalVisible(true);
+                })
+                .catch(() => {
+                  setNetwork(false);
+                })
+            }
             className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
           >
             Edit Event
@@ -124,15 +161,31 @@ function AdminEventCard(props) {
               </div>
             </Modal.Body>
           </Modal>
+          <Modal show={!network}>
+            <Modal.Header>You are Offline</Modal.Header>
+            <Modal.Body>Please Refresh the Page</Modal.Body>
+          </Modal>
           <div
-            onClick={() => certificateGeneration(props)}
+            onClick={() =>
+              fetch("https://www.google.com/", {
+                // Check for internet connectivity
+                mode: "no-cors",
+              })
+                .then(() => {
+                  certificateGeneration(props);
+                  setCertificatesMessage(true);
+                })
+                .catch(() => {
+                  setNetwork(false);
+                })
+            }
             className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
           >
             Send Certificates
           </div>
           <ExportJsonCsv
             headers={headers}
-            items={clean()}
+            items={attendees}
             fileTitle={eventTitle}
           >
             <div className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center">
@@ -140,7 +193,18 @@ function AdminEventCard(props) {
             </div>
           </ExportJsonCsv>
           <div
-            onClick={() => setQRVisible(true)}
+            onClick={() =>
+              fetch("https://www.google.com/", {
+                // Check for internet connectivity
+                mode: "no-cors",
+              })
+                .then(() => {
+                  setQRVisible(true);
+                })
+                .catch(() => {
+                  setNetwork(false);
+                })
+            }
             className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
           >
             Show QR
@@ -152,6 +216,12 @@ function AdminEventCard(props) {
                 <QRCode value={props.event["id"]}></QRCode>
               </div>
             </Modal.Body>
+          </Modal>
+          <Modal
+            show={certificatesMessage}
+            onClose={() => setCertificatesMessage(false)}
+          >
+            <Modal.Header>Certificates Generated Successfully</Modal.Header>
           </Modal>
         </div>
       </Card>

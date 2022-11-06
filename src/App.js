@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter,Routes,Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter,Routes,Route} from 'react-router-dom';
 import './App.css';
 import ConfirmSignUp from './Pages/Authentication/ConfirmSignUp';
 import HomePage from './Pages/HomePage/HomePage';
@@ -12,8 +12,7 @@ import awsExports from './aws-exports';
 import {Amplify} from 'aws-amplify';
 import Certificates from './Pages/Certificates/Certificates';
 import QR from './QR';
-import Offline from './Pages/Offline/Offline';
-import InstallPWA from './InstallPWA';
+import PageNotFound from './Pages/PageNotFound/PageNotFound';
 
 function App() {
   Amplify.configure(awsExports);
@@ -30,7 +29,7 @@ function App() {
         <Route path='add-event' element={<AddEvent></AddEvent>}></Route>
         <Route path='certificates' element={<Certificates></Certificates>}></Route>
         <Route path='qr' element={<QR></QR>}></Route>
-        <Route path='offline' element={<Offline></Offline>}></Route>
+        <Route path='*' element={<PageNotFound></PageNotFound>}></Route>
 
       </Routes>
     </BrowserRouter>

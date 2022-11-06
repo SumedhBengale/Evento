@@ -50,48 +50,53 @@ function EventCard(props) {
   }, []);
 
   async function attend(location) {
-    if (CheckConnectivity) {
-      const user = await Auth.currentAuthenticatedUser();
-      const currentUser = {
-        name: user.attributes["name"],
-        middle_name: user.attributes["middle_name"],
-        family_name: user.attributes["family_name"],
-        email: user.attributes["email"],
-      };
-      async function updateEvent(id) {
-        const original = await DataStore.query(Event, id);
-        var attendeeList = original.attendees;
-        var newAttendeeList = [...JSON.parse(attendeeList), currentUser];
-        console.log(newAttendeeList.length);
-        await DataStore.save(
-          Event.copyOf(original, (updated) => {
-            updated.attendees = newAttendeeList;
-          })
-        );
-      }
+    fetch("https://www.google.com/", {
+      // Check for internet connectivity
+      mode: "no-cors",
+    })
+      .then(async () => {
+        const user = await Auth.currentAuthenticatedUser();
+        const currentUser = {
+          name: user.attributes["name"],
+          middle_name: user.attributes["middle_name"],
+          family_name: user.attributes["family_name"],
+          email: user.attributes["email"],
+        };
+        async function updateEvent(id) {
+          const original = await DataStore.query(Event, id);
+          var attendeeList = original.attendees;
+          var newAttendeeList = [...JSON.parse(attendeeList), currentUser];
+          console.log(newAttendeeList.length);
+          await DataStore.save(
+            Event.copyOf(original, (updated) => {
+              updated.attendees = newAttendeeList;
+            })
+          );
+        }
 
-      var x =
-        geolib.getDistance(
-          { latitude: location.lat, longitude: location.lng },
-          { latitude: curLoc.lat, longitude: curLoc.lng },
-          0.5
-        ) - props.event["radius"];
-      if (x >= 0) {
-        setAttendMessage(
-          "You are outside the permitted range by " + x + " meters"
-        );
-      } else if (x < 0) {
-        setAttendMessage(
-          "You are within the permitted range, your attendence will be marked."
-        );
-        updateEvent(props.event["id"]);
-      } else {
-        setAttendMessage("Invalid Input.");
-      }
-      setAttendVisible(true);
-    } else {
-      setNetwork(false);
-    }
+        var x =
+          geolib.getDistance(
+            { latitude: location.lat, longitude: location.lng },
+            { latitude: curLoc.lat, longitude: curLoc.lng },
+            0.5
+          ) - props.event["radius"];
+        if (x >= 0) {
+          setAttendMessage(
+            "You are outside the permitted range by " + x + " meters"
+          );
+        } else if (x < 0) {
+          setAttendMessage(
+            "You are within the permitted range, your attendence will be marked."
+          );
+          updateEvent(props.event["id"]);
+        } else {
+          setAttendMessage("Invalid Input.");
+        }
+        setAttendVisible(true);
+      })
+      .catch(() => {
+        setNetwork(false);
+      });
   }
 
   return (
@@ -131,7 +136,16 @@ function EventCard(props) {
             type="button"
             className="bg-[#1a56db] hover:bg-[#1e429f] text-white p-5 border-5 rounded-lg h-12 flex justify-center items-center"
             onClick={() =>
-              navigate("/qr", { state: { id: props.event["id"] } })
+              fetch("https://www.google.com/", {
+                // Check for internet connectivity
+                mode: "no-cors",
+              })
+                .then(() => {
+                  navigate("/qr", { state: { id: props.event["id"] } });
+                })
+                .catch(() => {
+                  setNetwork(false);
+                })
             }
           >
             Scan QR
@@ -141,7 +155,7 @@ function EventCard(props) {
           <Modal.Header>Attendance Message</Modal.Header>
           <Modal.Body>{attendMessage}</Modal.Body>
         </Modal>
-        <Modal show={!network} onClose={() => setAttendVisible(false)}>
+        <Modal show={!network}>
           <Modal.Header>You are Offline</Modal.Header>
           <Modal.Body>Please Refresh the Page</Modal.Body>
         </Modal>

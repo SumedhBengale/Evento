@@ -22,7 +22,7 @@ function UpdateEvent(props) {
   const [map, setMap] = React.useState(null);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: process.env.REACT_APP_MAPS_API,
+    googleMapsApiKey: "AIzaSyBoZFGXOCwer9dv34IPMOhFqlApLBQtprs",
   });
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(location);
@@ -55,12 +55,12 @@ function UpdateEvent(props) {
           Event.copyOf(original, (updated) => {
             updated.name = name;
             updated.description = description;
-            updated.name = name;
-            updated.name = name;
-            updated.name = name;
-            updated.name = name;
-            updated.name = name;
-            updated.name = name;
+            updated.time = time;
+            updated.organizer = organizer;
+            updated.guests = guests;
+            updated.location = location;
+            updated.radius = radius;
+            updated.extension = ext;
           })
         );
         console.log(newEvent.id);
@@ -119,7 +119,7 @@ function UpdateEvent(props) {
               placeholder="Guest"
               value={guests}
               onChange={(e) => {
-                setGuests(guests);
+                setGuests(e.target.value);
               }}
             ></TextInput>
             <TextInput
@@ -134,7 +134,7 @@ function UpdateEvent(props) {
             <TextInput
               type="datetime-local"
               placeholder="Time"
-              value={time}
+              // value={time}
               onChange={(e) => {
                 setTime(new Date(e.target.value).toISOString());
               }}
