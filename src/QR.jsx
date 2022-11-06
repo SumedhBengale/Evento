@@ -60,7 +60,7 @@ function QR() {
 
       <div className="flex justify-center">
         <QrReader
-          facingMode={"rear"}
+          facingMode="rear"
           delay={delay}
           style={previewStyle}
           onError={(e) => console.log(e)}
