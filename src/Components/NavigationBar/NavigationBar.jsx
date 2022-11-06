@@ -8,11 +8,6 @@ import { Event } from "../../models/index";
 function NavigationBar() {
   let navigate = useNavigate();
 
-  async function getUserInfo() {
-    const user = await Auth.currentAuthenticatedUser();
-    console.log("attributes:", user);
-  }
-
   async function signOut() {
     await Auth.signOut();
     navigate("/signin");
@@ -27,8 +22,6 @@ function NavigationBar() {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2 gap-2">
-          <Button onClick={() => navigate("/signin")}>Sign In</Button>
-          <Button onClick={() => InstallPWA()}>Install PWA</Button>
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
@@ -36,12 +29,8 @@ function NavigationBar() {
             <div className="cursor-pointer">Home</div>
           </Navbar.Link>
           <hr></hr>
-          <Navbar.Link onClick={() => navigate("/signup")}>
-            <div className="cursor-pointer">Sign Up</div>
-          </Navbar.Link>
-          <hr></hr>
-          <Navbar.Link onClick={getUserInfo}>
-            <div className="cursor-pointer">Get User</div>
+          <Navbar.Link onClick={() => navigate("/signin")}>
+            <div className="cursor-pointer">Sign In</div>
           </Navbar.Link>
           <hr></hr>
           <Navbar.Link onClick={() => navigate("/admin-console")}>
@@ -55,6 +44,12 @@ function NavigationBar() {
           <Navbar.Link onClick={signOut}>
             <div className="cursor-pointer">Sign Out</div>
           </Navbar.Link>
+          <hr></hr>
+          {/* <Navbar.Link> */}
+          {/* <div> */}
+          <InstallPWA></InstallPWA>
+          {/* </div> */}
+          {/* </Navbar.Link> */}
         </Navbar.Collapse>
       </Navbar>
     </>

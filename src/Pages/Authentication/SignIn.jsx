@@ -61,7 +61,7 @@ function SignIn() {
         <span className="text-sm">
           or{" "}
           <a
-            href="#"
+            href=""
             className="text-blue-500"
             onClick={() => navigate("/signup")}
           >

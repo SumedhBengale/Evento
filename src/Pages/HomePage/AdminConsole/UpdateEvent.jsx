@@ -86,8 +86,8 @@ function UpdateEvent(props) {
           e.preventDefault();
         }}
       >
-        <div className="grid grid-cols-2">
-          <div className="grid grid-cols-1 gap-6 w-3/4">
+        <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2">
+          <div className="grid lg:gap-6 gap-2">
             <TextInput
               type="text"
               placeholder="Name"
@@ -151,14 +151,11 @@ function UpdateEvent(props) {
                 }}
                 required
               ></TextInput>
-              <div className="mt-5">
-                <Button type="submit">Submit</Button>
-              </div>
             </div>
           </div>
           <div>
             {isLoaded ? (
-              <>
+              <div className="lg:h-96 h-40">
                 <GoogleMap
                   onClick={getLocation}
                   center={location}
@@ -170,10 +167,13 @@ function UpdateEvent(props) {
                   <MarkerF position={location}></MarkerF>
                   <CircleF center={location} radius={radius}></CircleF>
                 </GoogleMap>
-              </>
+              </div>
             ) : (
               <div>Loading</div>
             )}
+          </div>
+          <div className="mt-5">
+            <Button type="submit">Submit</Button>
           </div>
         </div>
       </form>

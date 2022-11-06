@@ -19,11 +19,13 @@ function Certificates() {
     <>
       <NavigationBar></NavigationBar>
       <div>
-        {certificates == null ? (
-          <div className="flex justify-center text-">No Certificates</div>
+        {certificates == 0 || certificates == null ? (
+          <div className="flex h-screen justify-center items-center">
+            <img src="nothing.png"></img>
+          </div>
         ) : (
           <div>
-            <div className="grid grid-cols-3">
+            <div className="grid lg:grid-cols-3 grid-cols-1">
               {Array.from(
                 { length: Object.keys(certificates).length },
                 (_, index) => {

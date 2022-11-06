@@ -82,64 +82,77 @@ function AdminEventCard(props) {
 
   return (
     <>
-      <Card className="p-20">
-        <div className="grid grid-cols-3">
-          <div className="col-span-2">
-            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Name: {props.event["name"]}
-            </h5>
-            <p className="font-normal text-gray-700 dark:text-gray-400">
-              Time: {time}
-            </p>
-            <p className="font-normal text-gray-700 dark:text-gray-400">
-              Organizer: {props.event["organizer"]}{" "}
-            </p>
-            <p className="font-normal text-gray-700 dark:text-gray-400">
-              Guests: {props.event["guests"]}{" "}
-            </p>
-            <div className="flex gap-2">
-              <Button onClick={() => deleteEvent()}>Delete</Button>
-              <hr></hr>
-              <Button type="button" onClick={() => setModalVisible(true)}>
-                Edit
-              </Button>
-              <Modal
-                size="3xl"
-                show={modalVisible}
-                onClose={() => setModalVisible(false)}
-              >
-                <Modal.Header>Edit Event</Modal.Header>
-                <Modal.Body>
-                  <div className="">
-                    <UpdateEvent event={props.event}></UpdateEvent>
-                  </div>
-                </Modal.Body>
-              </Modal>
-              <hr></hr>
-              <Button onClick={() => certificateGeneration(props)}>
-                Send Certificates
-              </Button>
-              <ExportJsonCsv
-                headers={headers}
-                items={clean()}
-                fileTitle={eventTitle}
-              >
-                <Button>Export CSV</Button>
-              </ExportJsonCsv>
-              <Button onClick={() => setQRVisible(true)}>Show QR Code</Button>
-              <Modal show={QRVisible} onClose={() => setQRVisible(false)}>
-                <Modal.Header>Attendance QR Code</Modal.Header>
-                <Modal.Body>
-                  <div className="flex justify-center m-5">
-                    <QRCode value={props.event["id"]}></QRCode>
-                  </div>
-                </Modal.Body>
-              </Modal>
+      <Card>
+        <div className="p-2 flex rounded-lg justify-center items-center hover:scale-105 ease-in duration-75">
+          <img src={image} className="h-64" />
+        </div>
+        <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+          Name: {props.event["name"]}
+        </h5>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          Time: {time}
+        </p>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          Organizer: {props.event["organizer"]}{" "}
+        </p>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          Guests: {props.event["guests"]}{" "}
+        </p>
+        <div className="grid gap-2 grid-cols-2 lg:grid-cols-3">
+          <div
+            onClick={() => deleteEvent()}
+            className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
+          >
+            Delete Event
+          </div>
+          <div
+            type="button"
+            onClick={() => setModalVisible(true)}
+            className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
+          >
+            Edit Event
+          </div>
+          <Modal
+            size="3xl"
+            show={modalVisible}
+            onClose={() => setModalVisible(false)}
+          >
+            <Modal.Header>Edit Event</Modal.Header>
+            <Modal.Body>
+              <div className="">
+                <UpdateEvent event={props.event}></UpdateEvent>
+              </div>
+            </Modal.Body>
+          </Modal>
+          <div
+            onClick={() => certificateGeneration(props)}
+            className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
+          >
+            Send Certificates
+          </div>
+          <ExportJsonCsv
+            headers={headers}
+            items={clean()}
+            fileTitle={eventTitle}
+          >
+            <div className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center">
+              Export CSV
             </div>
+          </ExportJsonCsv>
+          <div
+            onClick={() => setQRVisible(true)}
+            className="bg-[#1a56db] hover:bg-[#1e429f] text-white rounded-lg h-12 flex justify-center items-center"
+          >
+            Show QR
           </div>
-          <div className="p-2 flex bg-slate-100 rounded-lg justify-center items-center max-h-50 hover:scale-105 ease-in duration-75">
-            <img src={image} />
-          </div>
+          <Modal show={QRVisible} onClose={() => setQRVisible(false)}>
+            <Modal.Header>Attendance QR Code</Modal.Header>
+            <Modal.Body>
+              <div className="flex justify-center m-5">
+                <QRCode value={props.event["id"]}></QRCode>
+              </div>
+            </Modal.Body>
+          </Modal>
         </div>
       </Card>
     </>

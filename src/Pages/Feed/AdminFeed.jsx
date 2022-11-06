@@ -18,13 +18,15 @@ function AdminFeed() {
 
   return (
     <>
-      {events == null ? (
-        <div>Loading</div>
+      {events == 0 || events == null ? (
+        <div className="flex h-screen justify-center items-center">
+          <img src="nothing.png"></img>
+        </div>
       ) : (
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3">
           {Array.from({ length: Object.keys(events).length }, (_, index) => {
             return (
-              <div className="p-10 col-span-8" key={index}>
+              <div className="lg:p-10 p-4 col-span-1" key={index}>
                 <AdminEventCard event={events[index]} />
               </div>
             );

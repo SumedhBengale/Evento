@@ -1,8 +1,6 @@
-/*This is a Simple Button that will open the prompt to Install the PWA */
-
 import React, { useEffect, useState } from "react";
 
-function InstallPWA() {
+const InstallPWA = () => {
   const [supportsPWA, setSupportsPWA] = useState(false);
   const [promptInstall, setPromptInstall] = useState(null);
 
@@ -39,6 +37,6 @@ function InstallPWA() {
       Install
     </button>
   );
-}
+};
 
 export default InstallPWA;

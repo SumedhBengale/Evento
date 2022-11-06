@@ -40,7 +40,7 @@ function AdminConsole() {
       <>
         <NavigationBar></NavigationBar>
         <div className="text-4xl text-center">Admin Console</div>
-        <div className="m-10 p-10 rounded-lg bg-slate-300">
+        <div className="m-10 flex items-center justify-center">
           <Button onClick={() => navigate("/add-event")}>Add New Event</Button>
         </div>
 
